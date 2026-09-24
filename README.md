@@ -1,50 +1,32 @@
-# You.Pdf
+# YOU.PDF
 
-pdf solution software
+A real PDF toolkit API: upload PDFs to extract text, read metadata, merge
+documents, or split out page ranges.
 
-![Language](https://img.shields.io/badge/Language-Go-blue)
-![Status](https://img.shields.io/badge/Status-Active-success)
-![License](https://img.shields.io/badge/License-MIT-green)
+## Run
 
-## 🚀 Overview
+```bash
+pip install -r requirements.txt
+uvicorn app:app --port 8001
+```
 
-Welcome to the **You.Pdf** repository. This project is built to deliver a robust and scalable solution tailored to modern development standards.
+## Endpoints
 
-## ✨ Features
+- `POST /info` — multipart `file` → page count, metadata, size
+- `POST /extract` — multipart `file`, optional form field `pages` (`"1-2,3"`)
+  → text per page
+- `POST /merge` — multipart `files` (2+) → merged PDF download
+- `POST /split` — multipart `file` + form field `ranges` (`"1-2,3"`) →
+  PDF containing those pages in the given order
+- `GET /health`
 
-- **High Performance:** Optimized for speed and efficiency.
-- **Scalable Architecture:** Designed to grow with your needs.
-- **Clean Codebase:** Follows best practices and industry standards.
-- **Secure by Default:** Engineered with security in mind.
+## Test
 
-## 🛠️ Prerequisites
+```bash
+pytest -q
+```
 
-Ensure you have the following installed in your environment before proceeding:
-- Appropriate runtime/compiler for `Go`
-- Standard development tools
+## Notes
 
-## 📦 Installation
-
-Follow standard installation steps for `Go` to set up the project locally:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Shivay00001/YOU.PDF.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd YOU.PDF
-   ```
-3. Install dependencies according to the standard `Go` ecosystem.
-
-## 💻 Usage
-
-Run the project using standard execution commands for `Go`. Ensure all environment variables and configurations are set prior to execution.
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
-
-## 📝 License
-
-This project is licensed under standard terms.
+Encrypted PDFs are rejected with a clear 400. Text extraction quality depends
+on the PDF itself (scanned-image PDFs have no extractable text layer).
